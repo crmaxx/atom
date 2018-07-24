@@ -1,5 +1,3 @@
-use std::error::Error as StdError;
-use std::fmt;
 use std::str::Utf8Error;
 
 use quick_xml::Error as XmlError;
@@ -19,6 +17,14 @@ pub enum Error {
     /// Unexpected end of input.
     #[fail(display = "unexpected end of input")]
     Eof,
+    /// An error during the web request.
+    #[cfg(feature = "from_url")]
+    #[fail(display = "{}", _0)]
+    UrlRequest(#[cause] ::reqwest::Error),
+    /// An IO error.
+    #[cfg(feature = "from_url")]
+    #[fail(display = "{}", _0)]
+    Io(#[cause] ::std::io::Error),
 }
 
 impl From<XmlError> for Error {
@@ -30,5 +36,19 @@ impl From<XmlError> for Error {
 impl From<Utf8Error> for Error {
     fn from(err: Utf8Error) -> Error {
         Error::Utf8(err)
+    }
+}
+
+#[cfg(feature = "from_url")]
+impl From<::reqwest::Error> for Error {
+    fn from(err: ::reqwest::Error) -> Error {
+        Error::UrlRequest(err)
+    }
+}
+
+#[cfg(feature = "from_url")]
+impl From<::std::io::Error> for Error {
+    fn from(err: ::std::io::Error) -> Error {
+        Error::Io(err)
     }
 }

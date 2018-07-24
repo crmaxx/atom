@@ -59,6 +59,28 @@ pub struct Feed {
 }
 
 impl Feed {
+    /// Attempt to read an Atom feed from the url.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use atom_syndication::Feed;
+    ///
+    /// let url = "https://feedpress.me/atom.xml";
+    /// let feed = Feed::from_url(url).unwrap();
+    /// ```
+    #[cfg(feature = "from_url")]
+    pub fn from_url(url: &str) -> Result<Channel, Error> {
+        use std::io::Read;
+
+        let mut content = String::new();
+
+        ::reqwest::get(url)?
+            .read_to_string(&mut content)?;
+
+        Ok(Feed::from_str(content.as_str())?)
+    }
+
     /// Attempt to read an Atom feed from the reader.
     ///
     /// # Examples

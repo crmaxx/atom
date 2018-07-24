@@ -20,6 +20,18 @@
 //! let string = "<feed></feed>";
 //! let feed = string.parse::<Feed>().unwrap();
 //! ```
+//! //!
+//! ## From a URL
+//!
+//! A channel can also be read from a URL.
+//!
+//! **Note**: This requires enabling the `from_url` feature.
+//!
+//! ```ignore
+//! use atom_syndication::Feed;
+//!
+//! let feed = Feed::from_url("http://example.com/feed.xml").unwrap();
+//! ```
 //!
 //! # Writing
 //!
@@ -56,6 +68,9 @@ extern crate derive_builder;
 extern crate failure;
 
 extern crate quick_xml;
+
+#[cfg(feature = "from_url")]
+extern crate reqwest;
 
 mod feed;
 mod category;

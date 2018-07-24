@@ -11,8 +11,12 @@ keywords = ["atom", "feed", "parser", "parsing"]
 categories = ["parser-implementations"]
 include = ["src/*", "Cargo.toml", "LICENSE-MIT", "LICENSE-APACHE", "README.md"]
 
+[features]
+from_url = ["reqwest"]
+
 [dependencies]
+failure = "0.1.1"
 quick-xml = "0.12"
 derive_builder = "0.5"
+reqwest = { version = "0.8", optional = true }
 serde = { version = "1.0", optional = true, features = ["derive"] }
-failure = "0.1.1"

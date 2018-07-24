@@ -70,7 +70,7 @@ impl Feed {
     /// let feed = Feed::from_url(url).unwrap();
     /// ```
     #[cfg(feature = "from_url")]
-    pub fn from_url(url: &str) -> Result<Channel, Error> {
+    pub fn from_url(url: &str) -> Result<Feed, Error> {
         use std::io::Read;
 
         let mut content = String::new();
